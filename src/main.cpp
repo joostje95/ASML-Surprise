@@ -121,15 +121,13 @@ void setLedColor(t_color color);
 
 uint8_t isSequenceRunning();
 
-const PROGMEM t_color black = {0, 0, 0};
-// const PROGMEM t_color red = {255, 0, 0};
-
-const PROGMEM t_color green = {0, 128, 0};
-const PROGMEM t_color blue = {0, 0, 128};
-const PROGMEM t_color purple = {255, 0, 255};
-const PROGMEM t_color yellow = {255, 128, 0};
-const PROGMEM t_color orange = {255, 80, 0};
-const PROGMEM t_color white = {255, 255, 255};
+const t_color black = {0, 0, 0};
+const t_color green = {0, 128, 0};
+const t_color blue = {0, 0, 128};
+const t_color purple = {255, 0, 255};
+const t_color yellow = {255, 128, 0};
+const t_color orange = {255, 80, 0};
+const t_color white = {255, 255, 255};
 
 // const PROGMEM t_tone noBeep = {0, 0, 0};
 // const PROGMEM t_tone startupBeep = {1760, 100, 15};
