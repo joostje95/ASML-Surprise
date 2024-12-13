@@ -7,6 +7,8 @@
 #include <Adafruit_SSD1306.h>
 #include <PololuBuzzer.h>
 
+#include "Bitmaps.h"
+
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
@@ -27,7 +29,7 @@
 #define TRAPDOOR_CLOSE_POS 90
 #define SIDEDOOR_PIN 7
 #define SIDEDOOR_OPEN_POS 90
-#define SIDEDOOR_CLOSE_POS 0
+#define SIDEDOOR_CLOSE_POS 10
 
 #define BUTTON_SWITCH_PIN 2
 #define BUTTON_LED_PIN 4
@@ -89,50 +91,6 @@ t_progressBar loadingBar1 = {.x = 2, .y = 34, .w = 124, .h = 28, .progress = 0};
 t_targetSlider slider1 = {.x = 2, .y = 18, .w = 80, .h = 15, .windowWidth = 7, .targetPos = 0, .windowPos = 64};
 t_targetSlider slider2 = {.x = 2, .y = 48, .w = 80, .h = 15, .windowWidth = 7, .targetPos = 0, .windowPos = 64};
 
-const PROGMEM byte asmlLogo[] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xfc, 0x0f,
-    0x00, 0xc0, 0x7f, 0x00, 0xff, 0x03, 0xfc, 0x07, 0xf8, 0x07, 0x00, 0x00,
-    0x00, 0x00, 0xfe, 0x0f, 0x00, 0xf8, 0xff, 0x01, 0xff, 0x03, 0xfc, 0x07,
-    0xf8, 0x07, 0x00, 0x00, 0x00, 0x00, 0xfe, 0x1f, 0x00, 0xfc, 0xff, 0x01,
-    0xff, 0x03, 0xfe, 0x0f, 0xf8, 0x07, 0x00, 0x00, 0x00, 0x00, 0xfe, 0x1f,
-    0x00, 0xfe, 0xff, 0x01, 0xff, 0x07, 0xfe, 0x0f, 0xf8, 0x07, 0x00, 0x00,
-    0x00, 0x00, 0xff, 0x1f, 0x00, 0xff, 0xff, 0x01, 0xff, 0x07, 0xfe, 0x0f,
-    0xf8, 0x07, 0x00, 0x00, 0x00, 0x00, 0xff, 0x3f, 0x80, 0xff, 0xff, 0x01,
-    0xff, 0x07, 0xfe, 0x0f, 0xf8, 0x07, 0x00, 0x00, 0x00, 0x00, 0xff, 0x3f,
-    0x80, 0x81, 0xc0, 0x01, 0xff, 0x0f, 0xff, 0x0f, 0xf8, 0x07, 0x00, 0x00,
-    0x00, 0x80, 0xbf, 0x3f, 0x80, 0x60, 0x00, 0x81, 0xff, 0x0f, 0xff, 0x0f,
-    0xf8, 0x07, 0x00, 0x00, 0x00, 0x80, 0xbf, 0x7f, 0x00, 0x70, 0x00, 0x80,
-    0xff, 0x0f, 0xff, 0x0f, 0xf8, 0x07, 0x00, 0x00, 0x00, 0x80, 0x3f, 0x7f,
-    0x00, 0xf0, 0x00, 0x80, 0xff, 0x8f, 0xff, 0x1f, 0xf8, 0x07, 0x00, 0x00,
-    0x00, 0xc0, 0x3f, 0x7f, 0x00, 0xf0, 0x03, 0x80, 0xff, 0x8f, 0xff, 0x1f,
-    0xf8, 0x07, 0x00, 0x00, 0x00, 0xc0, 0x3f, 0xff, 0x00, 0xf0, 0x1f, 0x80,
-    0xff, 0x9f, 0xff, 0x1f, 0xf8, 0x07, 0x00, 0x00, 0x00, 0xc0, 0x1f, 0xff,
-    0x00, 0xf0, 0x7f, 0x80, 0xbf, 0x9f, 0xff, 0x1f, 0xf8, 0x07, 0x00, 0x00,
-    0x00, 0xe0, 0x1f, 0xff, 0x00, 0xf0, 0xff, 0x81, 0xbf, 0x9f, 0xef, 0x1f,
-    0xf8, 0x07, 0x00, 0x00, 0x00, 0xe0, 0x1f, 0xfe, 0x01, 0xe0, 0xff, 0x83,
-    0xbf, 0xdf, 0xef, 0x1f, 0xf8, 0x07, 0x00, 0x00, 0x00, 0xe0, 0x1f, 0xfe,
-    0x01, 0xc0, 0xff, 0x83, 0x3f, 0xff, 0xef, 0x1f, 0xf8, 0x07, 0x00, 0x00,
-    0x00, 0xe0, 0x1f, 0xfe, 0x01, 0x00, 0xff, 0x87, 0x3f, 0xff, 0xef, 0x3f,
-    0xf8, 0x07, 0x00, 0x00, 0x00, 0xf0, 0x1f, 0xfe, 0x01, 0x00, 0xfc, 0x87,
-    0x3f, 0xff, 0xcf, 0x3f, 0xf8, 0x07, 0x00, 0x00, 0x00, 0xf0, 0xff, 0xff,
-    0x03, 0x00, 0xf8, 0x87, 0x3f, 0xff, 0xc7, 0x3f, 0xf8, 0x07, 0x00, 0x00,
-    0x00, 0xf0, 0xff, 0xff, 0x03, 0x00, 0xf8, 0x8f, 0x3f, 0xff, 0xc7, 0x3f,
-    0xf8, 0x07, 0x00, 0x00, 0x00, 0xf8, 0xff, 0xff, 0x83, 0x00, 0xf8, 0x8f,
-    0x3f, 0xfe, 0xc7, 0x3f, 0xf8, 0x07, 0x00, 0x00, 0x00, 0xf8, 0xff, 0xff,
-    0x87, 0x03, 0xfc, 0x87, 0x3f, 0xfe, 0xc7, 0x3f, 0xf8, 0x07, 0x00, 0x00,
-    0x00, 0xf8, 0x07, 0xfc, 0x87, 0xff, 0xff, 0xc3, 0x3f, 0xfe, 0xc3, 0x3f,
-    0xf8, 0xff, 0x3f, 0x00, 0x00, 0xfc, 0x07, 0xf8, 0x87, 0xff, 0xff, 0xc3,
-    0x3f, 0xfc, 0xc3, 0x7f, 0xf8, 0xff, 0x3f, 0x00, 0x00, 0xfc, 0x07, 0xf8,
-    0x8f, 0xff, 0xff, 0xc1, 0x3f, 0xfc, 0xc3, 0x7f, 0xf8, 0xff, 0x3f, 0x00,
-    0x00, 0xfc, 0x07, 0xf8, 0x8f, 0xff, 0xff, 0xc0, 0x1f, 0xfc, 0xc3, 0x7f,
-    0xf8, 0xff, 0x3f, 0x00, 0x00, 0xfe, 0x03, 0xf8, 0x0f, 0xfe, 0x3f, 0xc0,
-    0x1f, 0xfc, 0xc3, 0x7f, 0xf8, 0xff, 0x3f, 0x00, 0x00, 0xfe, 0x03, 0xf0,
-    0x1f, 0xe0, 0x07, 0xc0, 0x1f, 0xfc, 0xc1, 0x7f, 0xf0, 0xff, 0x3f, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 void updateInputs();
 void updateDisplay();
@@ -148,6 +106,7 @@ void updateHorProgressBar(t_progressBar bar);
 void drawAsmlLoadingScreen(uint8_t progress);
 void drawTargetSlider(t_targetSlider slider);
 void updateTargetSlider(t_targetSlider slider);
+void drawWafer(uint8_t x, uint8_t y, uint8_t index);
 
 void openTrapdoor();
 void closeTrapdoor();
@@ -177,7 +136,7 @@ const PROGMEM t_color white = {255, 255, 255};
 // const PROGMEM t_tone startupBeep2 = {1976, 100, 15};
 // const PROGMEM t_tone startupBeep3 = {2349, 100, 15};
 
-const PROGMEM t_tone waferPrepBeep = {1200, 450, 15};
+const PROGMEM t_tone waferPrepBeep = {1200, 400, 15};
 
 const PROGMEM t_tone lithographyBeep = {4000, 80, 15};
 const PROGMEM t_tone lithographyBeep2 = {5000, 80, 15};
@@ -205,12 +164,12 @@ const t_sequenceData waferPrepSequenceArray[] = {
 
 const t_sequenceData lithographySequenceArray[] = {
     {.timeToNext = 20, .setColor = true, .ledStripColor = white, .setTone = true, .buzzerTone = lithographyBeep},
-    {.timeToNext = 80, .setColor = true, .ledStripColor = black, .setTone = false},
-    {.timeToNext = 150, .setColor = true, .ledStripColor = purple, .setTone = true, .buzzerTone = lithographyBeep2}};
+    {.timeToNext = 180, .setColor = true, .ledStripColor = black, .setTone = false},
+    {.timeToNext = 200, .setColor = true, .ledStripColor = purple, .setTone = true, .buzzerTone = lithographyBeep2}};
 
 const t_sequenceData chipOutputSequenceArray[] = {
-    {.timeToNext = 100, .setColor = true, .ledStripColor = purple, .setTone = true, .buzzerTone = lithographyBeep},
-    {.timeToNext = 200, .setColor = true, .ledStripColor = yellow, .setTone = true, .buzzerTone = lithographyBeep2}};
+    {.timeToNext = 100, .setColor = true, .ledStripColor = purple, .setTone = true, .buzzerTone = bootBeep},
+    {.timeToNext = 400, .setColor = true, .ledStripColor = yellow, .setTone = false}};
 
 t_sequenceData *currentSequence = NULL;
 uint8_t currentSequenceIndex = 0;
@@ -415,7 +374,9 @@ void loop()
     if (millis() > stateDelayTime + 2000)
     {
       stateDelayTime = millis();
+      
       currentState = LOADINGSCREEN;
+      // currentState = PREPARING_WAFERS;
     }
   }
   break;
@@ -452,7 +413,7 @@ void loop()
   break;
   case LENS_ALIGNMENT:
   {
-    slider1.windowPos = 64;
+    slider1.windowPos = 80;
     slider2.windowPos = 130;
     slider1.targetPos = pot1State;
     slider2.targetPos = pot2State;
@@ -487,7 +448,7 @@ void loop()
   case COLUMNNATOR_SETPOINT:
   {
     slider1.windowPos = 200;
-    slider2.windowPos = 10;
+    slider2.windowPos = 60;
     slider1.targetPos = pot1State;
     slider2.targetPos = pot2State;
     Serial.print(F("pot1: "));
@@ -513,7 +474,7 @@ void loop()
     }
     if (slider1.onTarget && slider2.onTarget && switchState)
     {
-      currentState = PRODUCTION_READY;
+      currentState = CALIBRATION_TRANSITION;
     }
   }
   break;
@@ -522,7 +483,6 @@ void loop()
 
     if (!switchState)
     {
-      delay(150); //debounce
       currentState = PRODUCTION_READY;
     }
   }
@@ -549,25 +509,21 @@ void loop()
   break;
   case PREPARING_WAFERS:
   {
+    stateDelayTime = millis();
     currentDisplayState = SCREEN_PREPARING_WAFERS;
-    if (switchState)
-    {
-      incrementCounter = 0;
+    
       currentState = PREPARING_WAFERS_TRANSITION;
-    }
   }
   break;
   case PREPARING_WAFERS_TRANSITION:
   {
-    if (!isSequenceRunning() && incrementCounter < 10)
+    if (!isSequenceRunning())
     {
       startSequence(waferPrepSequenceArray, sizeof(waferPrepSequenceArray)/sizeof(waferPrepSequenceArray[0]));
-      incrementCounter++;
     }
     
-    else if (!isSequenceRunning())
+    if (millis() > stateDelayTime + 10000)
     {
-      incrementCounter = 0;
       stateDelayTime = millis();
       currentState = LITHOGRAPHY;
     }
@@ -576,38 +532,62 @@ void loop()
   case LITHOGRAPHY:
   { // sequence
     currentDisplayState = SCREEN_LITHOGRAPHY;
-    if (!isSequenceRunning() && incrementCounter < 20)
+    if (!isSequenceRunning())
     {
       startSequence(lithographySequenceArray, sizeof(lithographySequenceArray)/sizeof(lithographySequenceArray[0]));
-      incrementCounter++;
-    }    
-    else if (!isSequenceRunning())
+    }
+    
+    if (millis() > stateDelayTime + 5000)
     {
       openTrapdoor();
-      incrementCounter = 0;
       stateDelayTime = millis();
       currentState = CHIP_OUTPUT;
     }
+
+    // if (!isSequenceRunning() && incrementCounter < 20)
+    // {
+    //   startSequence(lithographySequenceArray, sizeof(lithographySequenceArray)/sizeof(lithographySequenceArray[0]));
+    //   incrementCounter++;
+    // }    
+    // else if (!isSequenceRunning())
+    // {
+    //   openTrapdoor();
+    //   incrementCounter = 0;
+    //   stateDelayTime = millis();
+    //   currentState = CHIP_OUTPUT;
+    // }
   }
   break;
   case CHIP_OUTPUT:
   { // sequence
-    if (!isSequenceRunning() && incrementCounter < 20)
+    if (!isSequenceRunning())
     {
       startSequence(chipOutputSequenceArray, sizeof(chipOutputSequenceArray)/sizeof(chipOutputSequenceArray[0]));
-      incrementCounter++;
-    }    
-    else if (!isSequenceRunning())
+    }
+    
+    if (millis() > stateDelayTime + 2000)
     {
-      incrementCounter = 0;
+      setLedColor(green);
       stateDelayTime = millis();
       currentState = PRODUCTION_FINISHED;
     }
+
+    // if (!isSequenceRunning() && incrementCounter < 20)
+    // {
+    //   startSequence(chipOutputSequenceArray, sizeof(chipOutputSequenceArray)/sizeof(chipOutputSequenceArray[0]));
+    //   incrementCounter++;
+    // }    
+    // else if (!isSequenceRunning())
+    // {
+    //   incrementCounter = 0;
+    //   stateDelayTime = millis();
+    //   currentState = PRODUCTION_FINISHED;
+    // }
   }
   break;
   case PRODUCTION_FINISHED:
   {
-    setLedColor(green);
+    
     currentDisplayState = SCREEN_PRODUCTION_FINISHED;
     if (switchState)
     {
@@ -670,6 +650,8 @@ void updateDisplay()
 {
   static uint8_t updateScreen = true;
   static enum E_displayState lastDisplayState = SCREEN_CLEAR;
+  static uint32_t AnimationTime = millis();
+  static uint8_t AnimationIndex = 0;
   if (currentDisplayState != lastDisplayState)
   {
     Serial.print(F("New screenState:"));
@@ -745,9 +727,10 @@ void updateDisplay()
       display.setTextSize(2);
       display.setTextColor(SSD1306_WHITE);
       display.setCursor(2, 2);
-      display.println(F("Setup complete."));
+      display.println(F("Setup"));
+      display.println(F("complete"));
       display.setTextSize(1);
-      display.setTextWrap(true);
+      display.println(F(""));
       display.println(F("Press button to"));
       display.println(F("start production"));
       display.display();
@@ -764,35 +747,39 @@ void updateDisplay()
       display.clearDisplay();
       display.setTextSize(2);
       display.setTextColor(SSD1306_WHITE);
-      display.setCursor(2, 2);
-      display.println(F("StroopWAFER"));
+      display.setCursor(0, 0);
+      display.println(F("Stroop"));
+      display.println(F("Wafer"));
+      display.println(F(""));
       display.println(F("Prepping"));
+      drawWafer(78, 0, 0);
       display.display();
       break;
     case SCREEN_LITHOGRAPHY:
       display.clearDisplay();
       display.setTextSize(2);
       display.setTextColor(SSD1306_WHITE);
-      display.setCursor(2, 2);
-      display.println(F("burning chips"));
+      display.setCursor(34, 0);
+      display.println(F("Laser"));
+      display.setCursor(28, 18);
+      display.println(F("Etching"));
+      display.setCursor(34, 36);
+      display.println(F("Chips"));
       display.display();
       break;
     case SCREEN_PRODUCTION_FINISHED:
       display.clearDisplay();
-      display.setTextSize(3);
-      display.setTextColor(SSD1306_WHITE);
-      display.setCursor(2, 2);
-      display.println(F("done!"));
       display.setTextSize(2);
-      display.println(F("check SWOD"));
-      display.setTextSize(1);
-      display.println(F("StroopWafer"));
-      display.println(F("OutputDoor :)"));
+      display.setTextColor(SSD1306_WHITE);
+      display.setCursor(32, 5);
+      display.println(F("done!"));
+      display.drawXBitmap(44, 22, doneCheckMark, 40, 40, SSD1306_WHITE);
       display.display();
       break;
     default:
       break;
     }
+    AnimationIndex = 0;
   }
 
   // changing variables for partial updates
@@ -825,6 +812,62 @@ void updateDisplay()
     
     display.display();
   }
+
+  //wafer rotation animation
+  if (currentDisplayState == SCREEN_PREPARING_WAFERS && millis() > AnimationTime + 200)
+  {
+    AnimationTime = millis();
+    drawWafer(78, 0, AnimationIndex);
+    display.display();
+    AnimationIndex ++;
+    if (AnimationIndex >= sizeof(waferBitmapArray)/sizeof(waferBitmapArray[0]))
+    {
+      AnimationIndex = 0;
+    }
+  }
+
+  //production done checkmark
+  if (currentDisplayState == SCREEN_PRODUCTION_FINISHED && millis() > AnimationTime + 2000)
+  {
+    AnimationTime = millis();
+    switch (AnimationIndex)
+    {
+    case 0:
+      display.clearDisplay();
+      display.setCursor(32, 5);
+      display.println(F("Done!"));
+      display.drawXBitmap(44, 22, doneCheckMark, 40, 40, SSD1306_WHITE);
+      break;
+    case 1:
+    case 3:
+    case 5:
+    display.clearDisplay();
+      display.setCursor(4, 5);
+      display.println(F("check SWOD"));
+      display.drawXBitmap(44, 22, outputArrow, 40, 40, SSD1306_WHITE);
+      break;
+    case 2:
+    case 4:
+    case 6:
+    display.clearDisplay();
+      display.setCursor(4, 5);
+      display.println(F("check SWOD"));
+      display.drawXBitmap(44, 22, outputBasic, 40, 40, SSD1306_WHITE);
+      break;
+    
+    default:
+      AnimationIndex = 0;
+      break;
+    }
+    AnimationIndex ++;
+    if (AnimationIndex > 6)
+    {
+      AnimationIndex = 0;
+    }
+    display.display();    
+    
+  }
+
 }
 
 void playTone(t_tone tone)
@@ -851,9 +894,10 @@ void startSequence(const t_sequenceData sequence[], uint8_t elements)
 void startSequenceRec(const t_sequenceData sequence[], uint8_t index)
 {
   setSequenceOutputs(sequence[currentSequenceIndex]);
-  currentSequenceIndex++;
+  
   if (currentSequenceIndex < maxSequenceIndex)
   {
+    currentSequenceIndex++;
     sequenceMillis = millis() + sequence->timeToNext;
   }
   else
@@ -901,6 +945,12 @@ void displayAsmlLogo()
 void drawAsmlLogo(uint8_t y = 0)
 {
   display.drawXBitmap(0, y, asmlLogo, 128, 32, SSD1306_WHITE);
+}
+
+void drawWafer(uint8_t x, uint8_t y, uint8_t index)
+{
+  display.fillRect(x, y, 50, 50, SSD1306_BLACK);
+  display.drawXBitmap(x, y, waferBitmapArray[index], 50, 50, SSD1306_WHITE);
 }
 
 void drawHorProgressBar(t_progressBar bar)
